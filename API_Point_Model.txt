@@ -1,0 +1,204 @@
+API POINT MODEL
+
+port    = 4000
+main    = api/v1/
+
+- User Table
+    getAllData ()
+        -> METHOD : GET
+        -> api Point main/users 
+        -> input  - none
+        -> output - All User Data
+   
+    getLoginData ()
+        -> METHOD : GET
+        -> api Point main/user/:uname&:pass 
+        -> input  - params
+        params -> uname, pass
+        -> output - Return One user data that match with password
+   
+    CreateUserData ()
+        -> METHOD : POST
+        -> api Point main/user 
+        -> input  - body     
+        body ->
+        {
+            "nama"      : String,
+            "kelamin"   : Boolean,
+            "email"     : String,
+            "password"  : String
+        }
+        -> output - Return One user data that Created
+   
+    deleteOneUserData ()
+        -> METHOD : DELETE
+        -> api Point main/user 
+        -> input  - body     
+        body ->
+        {
+            "id"        : String,
+            "email"     : String,
+        }
+        -> output - Return One user data that Deleted
+    
+    updateOneUserData ()
+        -> METHOD : PUT
+        -> api Point main/:id
+        -> input body, params
+        body -> 
+        {
+            "nama"      : String,
+            "email"     : String
+        }
+        params -> idUser
+
+    updateUserPassword () 
+        -> METHOD : PUT
+        -> api Point main/user/pass/:idUser
+        -> input body, params
+        body -> 
+        {
+            oldPassword : String,
+            password    : String
+        }
+        params -> idUser
+        -> output - Return Succes If password changed
+
+- Artikel Table
+    getAllData ()
+        -> METHOD : GET
+        -> api Point main/artikels
+        -> input - none
+        -> output - Return all artikel data
+
+    getOneData ()
+        -> METHOD : GET
+        -> api Point main/artikel/:idArtikel
+        -> input params
+        params -> idUser
+        -> output - Return Succes and One data If data Exist
+
+    createOneData () 
+        -> METHOD : POST
+        -> api Point main/artikel
+        -> input body
+        body -> 
+        {
+            "idUser"    : String,
+            "judul"     : String,
+            "jenis"     : String,
+            "gambar"    : String,
+            "deskripsi" : String
+        }
+        -> output - Return Succes if Data created
+
+    updateOneData () 
+        -> METHOD : PUT
+        -> api Point main/artikel/:idArtikel
+        -> input body, params
+        body -> 
+        {
+            judul       : String,
+            jenisWisata : String
+            deskripsi   : String
+        }
+        params -> idArtikel
+        -> output - Return Succes If Data changed
+
+    deleteOneData ()
+        -> METHOD : DELETE
+        -> api Point main/artikel/:idArtikel&:idUser
+        -> input params
+        params -> idUser, idArtikel
+        -> output - Return Succes If password changed
+
+- Wisata Table
+    getAllWisata () 
+        -> METHOD : GET
+        -> api Point main/wisatas
+        -> input none
+        -> output - Return All Artikel data If exist
+
+    getOneWisata () 
+        -> METHOD : GET
+        -> api Point main/wisata/:idWisata
+        -> input params
+        params -> idWisata
+        -> output - Return One Wisata Data
+    
+    createWisata ()
+        -> METHOD : POST
+        -> api Point main/wisata/:userID
+        -> input body, params
+        body -> 
+        {
+            namaTempat  : String,
+            lokasi      : String,
+            biaya       : Number,
+            rating      : Number,
+            waktuTempuh : Number,
+            lokasiGIS   : String,
+            deskripsi   : String,
+            gambar      : String,
+            verified    : Boolean
+        }
+        params -> userID
+        -> output - Return Succes If data wisata Created
+    
+    updateOneWisata () 
+        -> METHOD : PUT
+        -> api Point main/wisata/:wisataID
+        -> input body, params
+        body -> 
+        {
+            namaTempat  : String,
+            lokasi      : String,
+            biaya       : Number,
+            rating      : Number,
+            waktuTempuh : Number,
+            lokasiGIS   : String,
+            deskripsi   : String,
+            gambar      : String,
+        }
+        params -> wisataID
+        -> output - Return Succes If data is Changed
+    
+    deleteOneWisata ()
+        -> METHOD : DELETE
+        -> api Point main/user/pass/idWisata&:idUser
+        -> input params
+        params -> idUser, idWisata
+        -> output - Return Succes If password changed
+
+- Komentar Table
+    getAllKomentar () 
+        -> METHOD : GET
+        -> api Point main/komentars
+        -> input - none
+        -> output - Return Succes If data exist
+    
+    getKomentarByJenis ()
+        -> METHOD : GET
+        -> api Point main/komentar/:jenisID
+        -> input params
+        params -> jenisID
+        -> output - Return data if data exist
+    
+    createKomentar() 
+        -> METHOD : POST
+        -> api Point main/komentar
+        -> input body
+        body -> 
+        {
+            uploaderID  : String
+            jenisID     : String
+            komentar    : String
+        }
+        -> output - Return Succes if data Created
+    
+    deleteKomentarData () 
+        -> METHOD : DELETE
+        -> api Point main/komentar/idKomentar&:idUser
+        -> input params
+        params -> idKomentar, idUser
+        -> output - Return Succes If password changed

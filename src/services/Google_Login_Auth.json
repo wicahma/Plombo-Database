@@ -1,0 +1,14 @@
+{
+  "web": {
+    "client_id": "521562339335-qcd95qi0p1pfipe51ign9421h928il8s.apps.googleusercontent.com",
+    "project_id": "silver-theme-372212",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "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",
+    "redirect_uris": [
+      "http://localhost:3000",
+      "http://localhost:5000/auth/google/callback"
+    ]
+  }
+}
