@@ -3,7 +3,12 @@ const artikel = require("../models/artikelModel");
 const user = require("../models/userModel");
 
 const bcrypt = require("bcrypt");
-const { authenticateGoogle, uploadToGoogleDrive } = require("../services/googleDriveServices");
+const {
+  authenticateGoogle,
+  uploadToGoogleDrive,
+  deleteFromGoogleDrive,
+} = require("../services/googleDriveServices");
+const { deleteFile } = require("../middlewares/multerFileHandler");
 
 exports.getAllArtikel = async (req, res) => {
   const artikels = await artikel
@@ -15,6 +20,15 @@ exports.getAllArtikel = async (req, res) => {
     (artikel) => artikel.verified === true
   );
   return res.status(200).json(artikel_verified);
+};
+
+exports.getAllArtikelbyUser = async (req, res) => {
+  const artikels = await artikel
+    .find({ uploaderID: req.params.idUser })
+    .select("-deskripsi")
+    .populate("uploaderID", "nama")
+    .catch((err) => res.status(500).json(err));
+  return res.status(200).json(artikels);
 };
 
 exports.getNewestArtikel = async (req, res) => {
@@ -33,32 +47,43 @@ exports.getNewestArtikel = async (req, res) => {
 };
 
 exports.createArtikel = async (req, res) => {
-  const users = await user.findById(req.body.idUser);
-  const data = { ...req.body };
+  const auth = authenticateGoogle();
+  const artikelData = { ...req.body };
+  // console.log(req.files);
 
-  let artikelData = JSON.parse(data.artikel);
+  const users = await user.findById(artikelData.id_user);
+  if (users === null) return res.status(404).json("Data user tidak ada!");
+
   try {
     if (!req.file) {
       res.status(400).send("No file uploaded.");
       return;
     }
-    const auth = authenticateGoogle();
-    const response = await uploadToGoogleDrive(req.file, auth);
-    artikelData.image = response.data.id;
+    const response = await uploadToGoogleDrive(
+      req.file,
+      auth,
+      process.env.ARTIKEL_IMAGE_FILE_ID
+    );
+    artikelData.gambar = response.data.id;
     deleteFile(req.file.path);
   } catch (err) {
     console.log(err);
   }
 
-  if (users === null) return res.status(404).json("Data user tidak ada!");
   await artikel
     .create({
-      ...req.body,
+      jenisWisata: artikelData.jenisWisata,
+      judul: artikelData.judul,
+      deskripsi: artikelData.deskripsi,
+      gambar: artikelData.gambar,
       uploaderID: users._id,
       verified: false,
     })
     .then((resp) => res.status(201).json(resp))
-    .catch((err) => res.status(400).json(err));
+    .catch((err) => {
+      deleteFromGoogleDrive(auth, artikelData.gambar);
+      res.status(400).json(err);
+    });
 };
 
 // Done
@@ -85,6 +110,7 @@ exports.updateOneArtikel = async (req, res) => {
 
 // Done
 exports.deleteOneArtikel = async (req, res) => {
+  const auth = authenticateGoogle();
   const users = await user.findById(req.params.IdUser);
   if (users === null) return res.status(400).json("Data User tidak ada");
 
@@ -93,7 +119,10 @@ exports.deleteOneArtikel = async (req, res) => {
       _id: req.params.idArtikel,
       uploaderID: users._id,
     })
-    .then((resp) => res.status(200).json(resp))
+    .then((resp) => {
+      deleteFromGoogleDrive(auth, resp.gambar);
+      res.status(200).json(resp);
+    })
     .catch((err) => res.status(500).json("Data gagal dihapus"));
 };
 

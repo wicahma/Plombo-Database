@@ -14,18 +14,18 @@ const wisataRouter = require("./src/routes/wisataRoute");
 const komentarRouter = require("./src/routes/komentarRoute");
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: [
-      "https://plombo-web-application-diama.vercel.app",
-      "https://plombo-web-application-git-master-diama.vercel.app",
-      "https://plombo-web-application.vercel.app",
-    ],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
     credentials: true,
   })
 );
 
+// "https://plombo-web-application-diama.vercel.app",
+// "https://plombo-web-application-git-master-diama.vercel.app",
+// "https://plombo-web-application.vercel.app",
 const mainRoute = process.env.MAIN_ROUTES;
 
 app.use(mainRoute, userRouter);

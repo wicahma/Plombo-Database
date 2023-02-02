@@ -28,10 +28,10 @@ async function generatePublicUrl(fileId, drive) {
   }
 }
 
-exports.uploadToGoogleDrive = async (file, auth) => {
+exports.uploadToGoogleDrive = async (file, auth, fileName) => {
   const fileMetadata = {
     name: file.originalname,
-    parents: ["19SEJp7wfCsCpNFGvy_gRyy8x4TTZXpea"],
+    parents: [fileName],
   };
 
   const media = {
@@ -54,5 +54,13 @@ exports.uploadToGoogleDrive = async (file, auth) => {
     .catch((err) => {
       console.log("error, data id gagal dibuat", err);
     });
+  return response;
+};
+
+exports.deleteFromGoogleDrive = async (auth, imageID) => {
+  const driveService = google.drive({ version: "v3", auth });
+  const response = await driveService.files.delete({
+    fileId: imageID,
+  });
   return response;
 };

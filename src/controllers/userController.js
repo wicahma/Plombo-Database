@@ -1,6 +1,11 @@
 const { validationResult } = require("express-validator");
 const user = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const {
+  authenticateGoogle,
+  uploadToGoogleDrive,
+} = require("../services/googleDriveServices");
+const { deleteFile } = require("../middlewares/multerFileHandler");
 
 // Done
 exports.getAllUser = async (req, res) => {
@@ -42,7 +47,7 @@ exports.createUser = async (req, res) => {
 
   if (users.length > 0)
     return res.status(404).json("Email sudah pernah digunakan");
-    
+
   await user
     .create({
       ...req.body,
@@ -90,6 +95,37 @@ exports.updateOneUser = async (req, res) => {
       res.status(200).json({ message: "Data berhasil diupdate " })
     )
     .catch((err) => res.status(500).json("Data gagal dipudate"));
+};
+
+exports.updateImage = async (req, res) => {
+  const auth = authenticateGoogle();
+  console.log(req.file);
+  let response;
+  const users = await user.findById(req.params.id);
+  if (users === null) return res.status(404).json("Data user tidak ada!");
+
+  try {
+    if (!req.file) {
+      res.status(400).send("No file uploaded.");
+      return;
+    }
+    response = await uploadToGoogleDrive(
+      req.file,
+      auth,
+      process.env.USER_IMAGE_FILE_ID
+    );
+    deleteFile(req.file.path);
+  } catch (err) {
+    console.log(err);
+  }
+  await user
+    .findByIdAndUpdate(req.params.id, { gambar: response.data.id })
+    .then((resp) =>
+      res.status(200).json({ message: "Data berhasil diupdate" })
+    )
+    .catch((err) =>
+      res.status(500).json({ message: "Data gagal dipudate", err: err })
+    );
 };
 
 exports.updatePassword = async (req, res) => {
