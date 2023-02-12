@@ -18,10 +18,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
   })
 );
 
+// methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
 // "https://plombo-web-application-diama.vercel.app",
 // "https://plombo-web-application-git-master-diama.vercel.app",
 // "https://plombo-web-application.vercel.app",
