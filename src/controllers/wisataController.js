@@ -12,9 +12,26 @@ exports.getAllWisata = async (req, res) => {
   const wisatas = await wisata
     .find()
     .select("-deskripsi")
-    .populate("uploaderID", "nama");
+    .populate("uploaderID", "nama")
+    .catch((err) => res.status(500).json(err));
   const wisata_verified = wisatas.filter((wisata) => wisata.verified === true);
   return res.status(200).json(wisata_verified);
+};
+
+exports.getUnverifiedWisata = async (req, res) => {
+  const users = await user.findById(req.params.idUser);
+  if (users === null) return res.status(404).json("Data user tidak ada!");
+  if (users.type !== "admin") return res.status(404).json("User bukan admin!");
+
+  const wisatas = await wisata
+    .find()
+    .select("-deskripsi")
+    .populate("uploaderID", "nama")
+    .catch((err) => res.status(500).json(err));
+  const wisata_unverified = wisatas.filter(
+    (wisata) => wisata.verified === false
+  );
+  return res.status(200).json(wisata_unverified);
 };
 
 exports.getAllWisatabyUser = async (req, res) => {
@@ -38,8 +55,8 @@ exports.newestWisata = async (req, res, next) => {
 
 exports.createWisata = async (req, res) => {
   const auth = authenticateGoogle();
-  const data = { ...req.body };
-  let wisataData = JSON.parse(data.wisata);
+  const wisataData = { ...req.body };
+  // let wisataData = JSON.parse(data.wisata);
 
   const users = await user.findById(req.params.userID);
   if (users === null) return res.status(404).json("Data user tidak ada!");
@@ -62,7 +79,17 @@ exports.createWisata = async (req, res) => {
 
   await wisata
     .create({
-      ...wisataData,
+      jenisWisata: wisataData.jenisWisata,
+      judul: wisataData.judul,
+      deskripsi: wisataData.deskripsi,
+      gambar: wisataData.gambar,
+      namaTempat: wisataData.judul,
+      alamat: wisataData.alamat,
+      lokasi: wisataData.lokasi,
+      lokasiGIS: wisataData.lokasiGIS,
+      biaya: wisataData.biaya,
+      rating: wisataData.rating,
+      waktuTempuh: wisataData.waktuTempuh,
       uploaderID: users._id,
       verified: false,
     })

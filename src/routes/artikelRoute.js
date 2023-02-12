@@ -5,6 +5,7 @@ const { multer } = require("../middlewares/multerFileHandler");
 
 router.get("/artikels", artikelController.getAllArtikel);
 router.get("/artikels/user/:idUser", artikelController.getAllArtikelbyUser);
+router.get("/artikels/unverified/:idUser", artikelController.getUnverifiedArtikel);
 router.get("/artikel/newest-artikel", artikelController.getNewestArtikel);
 router.get("/artikel/:idArtikel", artikelController.getOneArtikel);
 router.post("/artikel", multer.single("gambar"),artikelController.createArtikel);

@@ -22,6 +22,22 @@ exports.getAllArtikel = async (req, res) => {
   return res.status(200).json(artikel_verified);
 };
 
+exports.getUnverifiedArtikel = async (req, res) => {
+  const users = await user.findById(req.params.idUser);
+  if (users === null) return res.status(404).json("Data user tidak ada!");
+  if (users.type !== "admin") return res.status(404).json("User bukan admin!");
+
+  const artikels = await artikel
+    .find()
+    .select("-deskripsi")
+    .populate("uploaderID", "nama")
+    .catch((err) => res.status(500).json(err));
+  const artikel_unverified = artikels.filter(
+    (artikel) => artikel.verified === false
+  );
+  return res.status(200).json(artikel_unverified);
+};
+
 exports.getAllArtikelbyUser = async (req, res) => {
   const artikels = await artikel
     .find({ uploaderID: req.params.idUser })

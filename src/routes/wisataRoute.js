@@ -5,6 +5,7 @@ const { multer } = require("../middlewares/multerFileHandler");
 
 router.get("/wisatas", wisataController.getAllWisata);
 router.get("/wisatas/user/:idUser", wisataController.getAllWisatabyUser);
+router.get("/wisatas/unverified/:idUser", wisataController.getUnverifiedWisata);
 router.get("/wisata/:idWisata", wisataController.getOneWisata);
 router.get("/wisata-newest", wisataController.newestWisata);
 router.post("/wisata/:userID", multer.single("gambar"),wisataController.createWisata);

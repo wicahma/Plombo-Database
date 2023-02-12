@@ -48,6 +48,7 @@ exports.createKomentar = async (req, res) => {
 exports.deleteOneKomentar = async (req, res) => {
   const users = await user.findById(req.params.idUser);
   if (users === null) return res.status(404).json("User tidak ada");
+  
   await komentar
     .findOneAndDelete({
       _id: req.params.idKomentar,
