@@ -15,7 +15,16 @@ const komentarRouter = require("./src/routes/komentarRoute");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://plombo-web-application.vercel.app",
+      "https://plombo-web-application-diama.vercel.app",
+      "https://plombo-web-application-git-master-diama.vercel.app",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
+  })
+);
 
 // methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
 // "https://plombo-web-application-diama.vercel.app",
