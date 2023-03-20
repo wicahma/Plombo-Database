@@ -10,19 +10,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "plombo-web-application.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
+    origin: "http://plombo-web-application.vercel.app/",
+    methods: "*",
   })
 );
 
 MongoConnection();
 
-
 const userRouter = require("./src/routes/userRoute");
 const artikelRouter = require("./src/routes/artikelRoute");
 const wisataRouter = require("./src/routes/wisataRoute");
 const komentarRouter = require("./src/routes/komentarRoute");
-
 
 // methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
 // "https://plombo-web-application-diama.vercel.app",
