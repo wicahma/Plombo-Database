@@ -30,7 +30,14 @@ const komentarRouter = require("./src/routes/komentarRoute");
 
 app.use(mainRoute, userRouter);
 app.use(mainRoute, artikelRouter);
-app.use(mainRoute, wisataRouter);
+app.use(
+  mainRoute,
+  cors({
+    origin: "https://plombo-web-application.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
+  }),
+  wisataRouter
+);
 app.use(mainRoute, komentarRouter);
 
 app.listen(PORT, () => {
