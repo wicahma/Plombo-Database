@@ -11,7 +11,6 @@ router.get("/wisata/:idWisata", wisataController.getOneWisata);
 router.get("/wisata-newest", wisataController.newestWisata);
 router.post(
   "/wisata/:userID",
-  cors(),
   multer.single("gambar"),
   wisataController.createWisata
 );
