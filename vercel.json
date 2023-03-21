@@ -8,9 +8,8 @@
   ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "./index.js",
       "headers": [
-        { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "https://plombo-web-application.vercel.app" },
         {
           "key": "Access-Control-Allow-Methods",
