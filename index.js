@@ -9,16 +9,6 @@ const mainRoute = process.env.MAIN_ROUTES;
 MongoConnection();
 
 app.use(bodyParser.json());
-// app.use(
-//   cors({
-//     origin: [
-//       "https://plombo-web-application.vercel.app",
-//       "https://plombo-web-application-diama.vercel.app",
-//       "https://plombo-web-application-git-master-diama.vercel.app",
-//     ],
-//     methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
-//   })
-// );
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Credentials", true);
@@ -38,6 +28,8 @@ app.use((req, res, next) => {
     "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
   );
 });
+
+app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
 
