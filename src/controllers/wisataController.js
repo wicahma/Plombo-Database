@@ -2,7 +2,6 @@ const { validationResult } = require("express-validator");
 const wisata = require("../models/wisataModel");
 const user = require("../models/userModel");
 const {
-  authenticateGoogle,
   uploadToGoogleDrive,
   deleteFromGoogleDrive,
 } = require("../services/googleDriveServices");
@@ -54,7 +53,6 @@ exports.newestWisata = async (req, res, next) => {
 };
 
 exports.createWisata = async (req, res) => {
-  const auth = authenticateGoogle();
   const wisataData = { ...req.body };
   // let wisataData = JSON.parse(data.wisata);
 
@@ -68,7 +66,6 @@ exports.createWisata = async (req, res) => {
     }
     const response = await uploadToGoogleDrive(
       req.file,
-      auth,
       process.env.WISATA_IMAGE_FILE_ID
     );
     wisataData.gambar = response.data.id;
@@ -95,7 +92,7 @@ exports.createWisata = async (req, res) => {
     })
     .then((resp) => res.status(201).json(resp))
     .catch((err) => {
-      deleteFromGoogleDrive(auth, wisataData.gambar);
+      deleteFromGoogleDrive(wisataData.gambar);
       res.status(500).json({ message: "Data wisata gagal dibuat!", err: err });
     });
 };
@@ -125,7 +122,6 @@ exports.updateOneWisata = async (req, res) => {
 };
 
 exports.deleteOneWisata = async (req, res) => {
-  const auth = authenticateGoogle();
   let id = req.params.idWisata;
   let idUser = req.params.idUser;
   const users = await user.findById(idUser);
@@ -134,7 +130,7 @@ exports.deleteOneWisata = async (req, res) => {
   await wisata
     .findOneAndDelete({ _id: id })
     .then((resp) => {
-      deleteFromGoogleDrive(auth, resp.gambar);
+      deleteFromGoogleDrive(resp.gambar);
       res.status(200).json("Data deleted!");
     })
     .catch((err) => res.status(500).json("Data user gagal dihapus!"));
