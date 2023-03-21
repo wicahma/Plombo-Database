@@ -16,7 +16,7 @@ app.use(
   })
 );
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 const userRouter = require("./src/routes/userRoute");
 const artikelRouter = require("./src/routes/artikelRoute");
