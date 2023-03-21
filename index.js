@@ -8,7 +8,12 @@ const PORT = process.env.PORT || 4000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://plombo-web-application-diama.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
+  })
+);
 
 MongoConnection();
 
@@ -17,8 +22,8 @@ const artikelRouter = require("./src/routes/artikelRoute");
 const wisataRouter = require("./src/routes/wisataRoute");
 const komentarRouter = require("./src/routes/komentarRoute");
 
-// methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
 // "https://plombo-web-application-diama.vercel.app",
+// methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"],
 // "https://plombo-web-application-git-master-diama.vercel.app",
 // "https://plombo-web-application.vercel.app",
 const mainRoute = process.env.MAIN_ROUTES;
