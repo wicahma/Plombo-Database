@@ -8,12 +8,7 @@ const PORT = process.env.PORT || 4000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: "https://plombo-web-application.vercel.app",
-    methods: "*",
-  })
-);
+app.use(cors());
 
 MongoConnection();
 
