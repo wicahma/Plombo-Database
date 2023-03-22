@@ -6,15 +6,11 @@
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "./index.js" }],
-  "headers": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "headers": [{ "key": "Access-Control-Allow-Origin", "value": "https://plombo.vercel.app" }]
-    },
-    {
-      "source": "/api/v1/(.*)",
-      "headers": [{ "key": "Access-Control-Allow-Origin", "value": "https://plombo.vercel.app" }]
+      "src": "/(.*)",
+      "dest": "/"
     }
-  ]
+  ],
+  "rewrites": [{ "source": "/api/v1/wisata/:userID", "destination": "/api/v1/wisata" }]
 }
