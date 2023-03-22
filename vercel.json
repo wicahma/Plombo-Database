@@ -11,6 +11,5 @@
       "src": "/(.*)",
       "dest": "/"
     }
-  ],
-  "rewrites": [{ "source": "/api/v1/wisata/:userID", "destination": "/api/v1/wisata" }]
+  ]
 }
