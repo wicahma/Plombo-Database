@@ -9,17 +9,9 @@ router.get("/wisatas/user/:idUser", wisataController.getAllWisatabyUser);
 router.get("/wisatas/unverified/:idUser", wisataController.getUnverifiedWisata);
 router.get("/wisata/:idWisata", wisataController.getOneWisata);
 router.get("/wisata-newest", wisataController.newestWisata);
-router.route("/wisata/:userID").post(
-  cors({
-    origin: [
-      "https://plombo-web-application.vercel.app",
-      "https://plombo-web-application-diama.vercel.app",
-      "https://plombo-web-application-git-master-diama.vercel.app",
-    ],
-  }),
-  multer.single("gambar"),
-  wisataController.createWisata
-);
+router
+  .route("/wisata/:userID")
+  .post(multer.single("gambar"), wisataController.createWisata);
 router.put("/wisata/:wisataID&:userID", wisataController.updateOneWisata);
 router.delete("/wisata/:idWisata&:idUser", wisataController.deleteOneWisata);
 router.delete("/wisata/user/:idUser", wisataController.deleteWisatabyUser);
