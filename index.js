@@ -10,12 +10,12 @@ MongoConnection();
 
 app.use(bodyParser.json());
 
-app.use(
-  mainRoute,
-  cors({
-    origin: "https://plombo.vercel.app",
-  })
-);
+// app.use(
+//   mainRoute,
+//   cors({
+//     origin: "https://plombo.vercel.app",
+//   })
+// );
 
 app.use(express.urlencoded({ extended: true }));
 
